@@ -42,7 +42,9 @@ class ChatBotController extends Controller
         $twilio_whatsapp_number = env('TWILIO_WHATSAPP_NUMBER');
         $account_sid = env("TWILIO_SID");
         $auth_token = env("TWILIO_AUTH_TOKEN");
-
+        Log::info('twilio_whatsapp_number: '.$twilio_whatsapp_number);
+        Log::info('account_sid: '.$account_sid);
+        Log::info('auth_token: '.$auth_token);
         $client = new Client($account_sid, $auth_token);
         return $client->messages->create(
             "whatsapp:+".$recipient,
