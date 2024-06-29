@@ -68,14 +68,17 @@ class ChatBotController extends Controller
                 "body" => $message,
                 "actions" => [
                     [
+                        "type" => "QUICK_REPLY",
                         "title" => "Check flight status",
                         "id" => "flightid1"
                     ],
                     [
+                        "type" => "QUICK_REPLY",
                         "title" => "Check gate number",
                         "id" => "flightid2"
                     ],
                     [
+                        "type" => "QUICK_REPLY",
                         "title" => "Speak with an agent",
                         "id" => "flightid2"
                     ]
