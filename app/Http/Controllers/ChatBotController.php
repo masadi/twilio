@@ -15,7 +15,8 @@ class ChatBotController extends Controller
         $body = $request->input('Body');
         Log::info('from: '.$from);
         Log::info('body: '.$body);
-        $client = new \GuzzleHttp\Client();
+        $this->sendWhatsAppMessage($body, $from);
+        /*$client = new \GuzzleHttp\Client();
         try {
             $response = $client->request('GET', "https://api.github.com/users/$body");
             $githubResponse = json_decode($response->getBody());
@@ -34,11 +35,11 @@ class ChatBotController extends Controller
         } catch (Exception $e) {
             $this->sendWhatsAppMessage($e->getMessage(), $from);
         }
-        return;
+        return;*/
     }
-    public function sendWhatsAppMessage(string $message, string $recipient)
+    public function sendWhatsAppMessage(string $message, string $recipientNumber)
     {
-        $twilio_whatsapp_number = env('TWILIO_WHATSAPP_NUMBER');
+        /*$twilio_whatsapp_number = env('TWILIO_WHATSAPP_NUMBER');
         $account_sid = env("TWILIO_SID");
         $auth_token = env("TWILIO_AUTH_TOKEN");
         Log::info('twilio_whatsapp_number: '.$twilio_whatsapp_number);
@@ -54,6 +55,22 @@ class ChatBotController extends Controller
             ]
         );
         return $pesan;
-        return $client->messages->create($recipient, array('from' => "whatsapp:+$twilio_whatsapp_number", 'body' => $message));
+        return $client->messages->create($recipient, array('from' => "whatsapp:+$twilio_whatsapp_number", 'body' => $message));*/
+        $twilioSid = env('TWILIO_SID');
+        $twilioToken = env('TWILIO_AUTH_TOKEN');
+        $twilioWhatsAppNumber = env('TWILIO_WHATSAPP_NUMBER');
+        try {
+            $twilio = new Client($twilioSid, $twilioToken);
+            $pesan = $twilio->messages->create(
+                "whatsapp:".$recipientNumber,
+                [
+                    "from" => "whatsapp:+" . $twilioWhatsAppNumber,
+                    "body" => $message,
+                ]
+            );
+            return $pesan;
+        } catch (Exception $e) {
+            //
+        }
     }
 }
