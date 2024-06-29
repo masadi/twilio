@@ -59,18 +59,14 @@ class ChatBotController extends Controller
         $twilioSid = env('TWILIO_SID');
         $twilioToken = env('TWILIO_AUTH_TOKEN');
         $twilioWhatsAppNumber = env('TWILIO_WHATSAPP_NUMBER');
-        try {
-            $twilio = new Client($twilioSid, $twilioToken);
-            $pesan = $twilio->messages->create(
-                "whatsapp:".$recipientNumber,
-                [
-                    "from" => "whatsapp:+" . $twilioWhatsAppNumber,
-                    "body" => $message,
-                ]
-            );
-            return $pesan;
-        } catch (Exception $e) {
-            //
-        }
+        $twilio = new Client($twilioSid, $twilioToken);
+        $pesan = $twilio->messages->create(
+            "whatsapp:".$recipientNumber,
+            [
+                "from" => "whatsapp:+" . $twilioWhatsAppNumber,
+                "body" => $message,
+            ]
+        );
+        return $pesan;
     }
 }
