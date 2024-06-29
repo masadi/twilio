@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Twilio\Rest\Client;
 
 class ChatBotController extends Controller
@@ -12,7 +13,8 @@ class ChatBotController extends Controller
     {
         $from = $request->input('From');
         $body = $request->input('Body');
-
+        Log::info('from: '.$from);
+        Log::info('body: '.$body);
         $client = new \GuzzleHttp\Client();
         try {
             $response = $client->request('GET', "https://api.github.com/users/$body");
