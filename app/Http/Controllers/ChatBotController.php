@@ -15,7 +15,8 @@ class ChatBotController extends Controller
         $body = $request->input('Body');
         Log::info('from: '.$from);
         Log::info('body: '.$body);
-        //$this->sendWhatsAppMessage($body, $from);
+        $this->sendWhatsAppMessage($body, $from);
+        /*
         $client = new \GuzzleHttp\Client();
         try {
             $response = $client->request('GET', "https://api.github.com/users/$body");
@@ -34,7 +35,7 @@ class ChatBotController extends Controller
             }
         } catch (Exception $e) {
             $this->sendWhatsAppMessage($e->getMessage(), $from);
-        }
+        }*/
         return;
     }
     public function sendWhatsAppMessage(string $message, string $recipientNumber)
@@ -65,6 +66,20 @@ class ChatBotController extends Controller
             [
                 "from" => "whatsapp:+" . $twilioWhatsAppNumber,
                 "body" => $message,
+                "actions" => [
+                    [
+                        "title" => "Check flight status",
+                        "id" => "flightid1"
+                    ],
+                    [
+                        "title" => "Check gate number",
+                        "id" => "flightid2"
+                    ],
+                    [
+                        "title" => "Speak with an agent",
+                        "id" => "flightid2"
+                    ]
+                ],
             ]
         );
         return $pesan;
