@@ -15,8 +15,8 @@ class ChatBotController extends Controller
         $body = $request->input('Body');
         Log::info('from: '.$from);
         Log::info('body: '.$body);
-        $this->sendWhatsAppMessage($body, $from);
-        /*$client = new \GuzzleHttp\Client();
+        //$this->sendWhatsAppMessage($body, $from);
+        $client = new \GuzzleHttp\Client();
         try {
             $response = $client->request('GET', "https://api.github.com/users/$body");
             $githubResponse = json_decode($response->getBody());
@@ -35,7 +35,7 @@ class ChatBotController extends Controller
         } catch (Exception $e) {
             $this->sendWhatsAppMessage($e->getMessage(), $from);
         }
-        return;*/
+        return;
     }
     public function sendWhatsAppMessage(string $message, string $recipientNumber)
     {
