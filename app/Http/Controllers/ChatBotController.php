@@ -11,7 +11,7 @@ class ChatBotController extends Controller
 {
     public function listenToReplies(Request $request)
     {
-        $from = $request->input('From');
+        $from = str_replace('+', '', $request->input('From'));
         $body = $request->input('Body');
         Log::info('from: '.$from);
         Log::info('body: '.$body);
