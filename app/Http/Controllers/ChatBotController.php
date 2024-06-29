@@ -10,6 +10,12 @@ use Twilio\Rest\Client;
 
 class ChatBotController extends Controller
 {
+    public function index(){
+        $data = [
+            'success' => TRUE,
+            'message' => 'Terhubung ke whatsapp'
+        ];
+    }
     public function listenToReplies(Request $request)
     {
         $from = $request->input('From');
