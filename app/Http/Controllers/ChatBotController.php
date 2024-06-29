@@ -15,6 +15,10 @@ class ChatBotController extends Controller
         $body = $request->input('Body');
         Log::info('from: '.$from);
         Log::info('body: '.$body);
+        $rawdata = file_get_contents("php://input");
+		$json = json_decode($rawdata, true);
+        Storage::disk('public')->put('whatsapp.json', json_encode(request()->all()));
+        Storage::disk('public')->put('rawdata.json', json_encode($json));
         $this->sendWhatsAppMessage($body, $from);
         /*
         $client = new \GuzzleHttp\Client();
