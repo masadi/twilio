@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use GuzzleHttp\Exception\RequestException;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Twilio\Rest\Client;
@@ -31,9 +31,8 @@ class ChatBotController extends Controller
             } else {
                 $this->sendWhatsAppMessage($githubResponse->message, $from);
             }
-        } catch (RequestException $th) {
-            $response = json_decode($th->getResponse()->getBody());
-            $this->sendWhatsAppMessage($response->message, $from);
+        } catch (Exception $e) {
+            $this->sendWhatsAppMessage($e->getMessage(), $from);
         }
         return;
     }
