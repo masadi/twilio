@@ -17,4 +17,4 @@ use App\Http\Controllers\ChatBotController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/chat-bot', [WhatsAppController::class, 'listenToReplies']);
+Route::post('/chat-bot', [ChatBotController::class, 'listenToReplies']);
