@@ -47,12 +47,12 @@ class ChatBotController extends Controller
         Log::info('auth_token: '.$auth_token);
         $client = new Client($account_sid, $auth_token);
         return $client->messages->create(
-            "whatsapp:+".$recipient,
+            "whatsapp:".$recipient,
             [
                 "from" => "whatsapp:+" . $twilio_whatsapp_number,
                 "body" => $message,
             ]
         );
-        return $client->messages->create($recipient, array('from' => "whatsapp+:$twilio_whatsapp_number", 'body' => $message));
+        return $client->messages->create($recipient, array('from' => "whatsapp:+$twilio_whatsapp_number", 'body' => $message));
     }
 }
