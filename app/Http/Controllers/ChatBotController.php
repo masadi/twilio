@@ -135,7 +135,7 @@ class ChatBotController extends Controller
     private function replyMessage($body){
         $data = [
             [
-                ""
+                $this->welcomeMessage()
             ],
             [
                 "Informasi umum adalah sebagai berikut:\n
