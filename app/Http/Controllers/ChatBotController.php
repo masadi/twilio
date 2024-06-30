@@ -49,7 +49,7 @@ class ChatBotController extends Controller
         }*/
         return;
     }
-    public function sendWhatsAppMessage(string $message, string $recipientNumber)
+    public function sendWhatsAppMessage(string $body, string $recipientNumber)
     {
         /*$twilio_whatsapp_number = env('TWILIO_WHATSAPP_NUMBER');
         $account_sid = env("TWILIO_SID");
@@ -73,6 +73,13 @@ class ChatBotController extends Controller
         $twilioWhatsAppNumber = env('TWILIO_WHATSAPP_NUMBER');
         $twilio = new Client($twilioSid, $twilioToken);
         $message = 'disini body nya ya';
+        if($body == '/erapor'){
+            $message = "Hai *$user*\n";
+            $message .= "Selamat Datang di Pusat Layanan Aplikasi e-Rapor SMK\n";
+            $message .= "Reply pesan ini dengan ketik:\n";
+            $message .= "Angka 1 untuk informasi umum\n";
+            $message .= "Angka 2 untuk bantuan\n";
+        }
         $pesan = $twilio->messages->create(
             $recipientNumber,
             [
