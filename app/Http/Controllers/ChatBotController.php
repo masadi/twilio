@@ -105,7 +105,7 @@ class ChatBotController extends Controller
                 ],*/
             ]
         );
-        Storage::disk('public')->put('pesan.json', $pesan);
+        Storage::disk('public')->put('pesan.json', $pesan->message_sid);
         return $pesan;
     }
 }
