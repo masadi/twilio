@@ -72,12 +72,13 @@ class ChatBotController extends Controller
         $twilioToken = env('TWILIO_AUTH_TOKEN');
         $twilioWhatsAppNumber = env('TWILIO_WHATSAPP_NUMBER');
         $twilio = new Client($twilioSid, $twilioToken);
+        $message = 'disini body nya ya';
         $pesan = $twilio->messages->create(
             $recipientNumber,
             [
                 "from" => "whatsapp:+" . $twilioWhatsAppNumber,
                 "body" => $message,
-                "actions" => [
+                /*"actions" => [
                     [
                         "type" => "QUICK_REPLY",
                         "title" => "Check flight status",
@@ -93,7 +94,7 @@ class ChatBotController extends Controller
                         "title" => "Speak with an agent",
                         "id" => "flightid2"
                     ]
-                ],
+                ],*/
             ]
         );
         return $pesan;
