@@ -62,9 +62,7 @@ class ChatBotController extends Controller
         $message .= "Selamat Datang di Pusat Layanan Aplikasi e-Rapor SMK\n";
         $message .= "Silahkan ketik /erapor untuk memulai percakapan\n";
         if($body == '/erapor'){
-            $message = "Reply pesan ini dengan ketik:\n";
-            $message .= "1 untuk informasi umum\n";
-            $message .= "2 untuk bantuan\n";
+            $message = $this->welcomeMessage();
         } else {
             if($OriginalRepliedMessageSid){
                 $find = Whatsapp::where(function($query) use ($user, $OriginalRepliedMessageSid){
@@ -77,6 +75,9 @@ class ChatBotController extends Controller
                         Whatsapp::where('nama', $user)->update(['status' => 0]);
                         $message = "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n";
                     } else {
+                        $message =$this->replyMessage($body);
+                        /*if($body == 0){
+                        }
                         if($body == 1){
                             $message = "Informasi umum adalah sebagai berikut:\n";
                             $message .= "Aplikasi e-Rapor SMK adalah aplikasi yang dikembangkan oleh Direktorat SMK\n";
@@ -89,7 +90,7 @@ class ChatBotController extends Controller
                             $message .= "Reply pesan ini dengan ketik:\n";
                             $message .= "0 untuk kembali ke menu sebelumnya\n";
                             $message .= "99 untuk keluar dari percakapan\n";
-                        }
+                        }*/
                     }
                 } else {
                     $message = "Riwayat percakapan tidak ditemukan. Silahkan ketik /erapor untuk memulai percakapan\n";
@@ -124,5 +125,36 @@ class ChatBotController extends Controller
         ]);
         //Storage::disk('public')->put('pesan.json', $pesan->sid);
         return $pesan;
+    }
+    private function welcomeMessage(){
+        $message = "Reply pesan ini dengan ketik:\n";
+        $message .= "1 untuk informasi umum\n";
+        $message .= "2 untuk bantuan\n";
+        return $message;
+    }
+    private function replyMessage($body){
+        $data = [
+            [
+                ""
+            ],
+            [
+                "Informasi umum adalah sebagai berikut:\n
+                Aplikasi e-Rapor SMK adalah aplikasi yang dikembangkan oleh Direktorat SMK\n
+                Reply pesan ini dengan ketik:\n
+                0 untuk kembali ke menu sebelumnya\n
+                99 untuk keluar dari percakapan\n",
+            ],
+            [
+                "Bantuan Troubleshooting e-Rapor SMK:\n
+                Reply pesan ini dengan ketik:\n
+                0 untuk kembali ke menu sebelumnya\n
+                99 untuk keluar dari percakapan\n",
+            ]
+        ];
+        if(isset($data[$body])){
+            return $data[$body];
+        } else {
+            return "Jawaban tidak ditemukan. Silahkan ketik /erapor untuk memulai percakapan\n";
+        }
     }
 }
