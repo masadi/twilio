@@ -117,7 +117,7 @@ class ChatBotController extends Controller
                         "id" => "flightid2"
                     ]
                 ],
-                'MediaUrl' => 'https://erapor.ditpsmk.net/img/faq/composer-update.png'
+                //'MediaUrl' => 'https://erapor.ditpsmk.net/img/faq/composer-update.png'
             ]
         );
         if($body != 99){
