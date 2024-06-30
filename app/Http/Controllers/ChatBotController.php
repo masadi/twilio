@@ -22,13 +22,14 @@ class ChatBotController extends Controller
         $from = $request->input('From');
         $body = $request->input('Body');
         $user = $request->input('ProfileName');
+        $OriginalRepliedMessageSid = $request->input('OriginalRepliedMessageSid');
         Log::info('from: '.$from);
         Log::info('body: '.$body);
         $rawdata = file_get_contents("php://input");
 		$json = json_decode($rawdata, true);
         Storage::disk('public')->put('whatsapp.json', json_encode(request()->all()));
         Storage::disk('public')->put('rawdata.json', json_encode($json));
-        $this->sendWhatsAppMessage($body, $user, $from);
+        $this->sendWhatsAppMessage($body, $user, $from, $OriginalRepliedMessageSid);
         /*
         $client = new \GuzzleHttp\Client();
         try {
@@ -51,7 +52,7 @@ class ChatBotController extends Controller
         }*/
         return;
     }
-    public function sendWhatsAppMessage(string $body, string $user, string $recipientNumber)
+    public function sendWhatsAppMessage($body, $user, $recipientNumber, $OriginalRepliedMessageSid)
     {
         /*$twilio_whatsapp_number = env('TWILIO_WHATSAPP_NUMBER');
         $account_sid = env("TWILIO_SID");
@@ -83,6 +84,25 @@ class ChatBotController extends Controller
             $message = "Reply pesan ini dengan ketik:\n";
             $message .= "1 untuk informasi umum\n";
             $message .= "2 untuk bantuan\n";
+        }
+        if($OriginalRepliedMessageSid){
+            $find = Whatsapp::where(function($query) use ($user, $OriginalRepliedMessageSid){
+                $query->where('nama', $user);
+                $query->where('sid', $OriginalRepliedMessageSid);
+                $query->where('status', 1);
+            })->first();
+            if($find){
+                if($body == 99){
+                    Whatsapp::where('nama', $user)->update(['status' => 0]);
+                    $message = "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n";
+                } else {
+                    $message = "Informasi umum adalah sebagai berikut:\n";
+                    $message .= "Aplikasi e-Rapor SMK adalah aplikasi yang dikembangkan oleh Direktorat SMK\n";
+                    $message = "Reply pesan ini dengan ketik:\n";
+                    $message .= "0 untuk kembali ke menu sebelumnya\n";
+                    $message .= "99 untuk keluar dari percakapan\n";
+                }
+            }
         }
         $pesan = $twilio->messages->create(
             $recipientNumber,

@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('nama');
             $table->string('sid');
+            $table->tinyInteger('status')->nullable()->default(1);
             $table->timestamps();
         });
     }
