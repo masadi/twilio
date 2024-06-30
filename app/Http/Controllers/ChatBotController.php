@@ -119,10 +119,12 @@ class ChatBotController extends Controller
                 ],
             ]
         );
-        Whatsapp::create([
-            'nama' => $user,
-            'sid' => $pesan->sid,
-        ]);
+        if($body != 99){
+            Whatsapp::create([
+                'nama' => $user,
+                'sid' => $pesan->sid,
+            ]);
+        }
         //Storage::disk('public')->put('pesan.json', $pesan->sid);
         return $pesan;
     }
