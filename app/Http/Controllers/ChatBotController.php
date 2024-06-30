@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Twilio\Rest\Client;
+use App\Models\Whatsapp;
 
 class ChatBotController extends Controller
 {
@@ -73,13 +74,15 @@ class ChatBotController extends Controller
         $twilioToken = env('TWILIO_AUTH_TOKEN');
         $twilioWhatsAppNumber = env('TWILIO_WHATSAPP_NUMBER');
         $twilio = new Client($twilioSid, $twilioToken);
-        $message = 'disini body nya ya';
+        $message = "Hai *$user*\n";
+        $message .= "Selamat Datang di Pusat Layanan Aplikasi e-Rapor SMK\n";
+        $message .= "Silahkan ketik /erapor untuk memulai percakapan\n";
         if($body == '/erapor'){
-            $message = "Hai *$user*\n";
-            $message .= "Selamat Datang di Pusat Layanan Aplikasi e-Rapor SMK\n";
-            $message .= "Reply pesan ini dengan ketik:\n";
-            $message .= "Angka 1 untuk informasi umum\n";
-            $message .= "Angka 2 untuk bantuan\n";
+            //$message = "Hai *$user*\n";
+            //$message .= "Selamat Datang di Pusat Layanan Aplikasi e-Rapor SMK\n";
+            $message = "Reply pesan ini dengan ketik:\n";
+            $message .= "1 untuk informasi umum\n";
+            $message .= "2 untuk bantuan\n";
         }
         $pesan = $twilio->messages->create(
             $recipientNumber,
@@ -105,7 +108,11 @@ class ChatBotController extends Controller
                 ],*/
             ]
         );
-        Storage::disk('public')->put('pesan.json', $pesan->sid);
+        Whatsapp::create([
+            'nama' => $user,
+            'sid' => $pesan->sid,
+        ]);
+        //Storage::disk('public')->put('pesan.json', $pesan->sid);
         return $pesan;
     }
 }
