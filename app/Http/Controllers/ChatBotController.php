@@ -54,23 +54,6 @@ class ChatBotController extends Controller
     }
     public function sendWhatsAppMessage($body, $user, $recipientNumber, $OriginalRepliedMessageSid)
     {
-        /*$twilio_whatsapp_number = env('TWILIO_WHATSAPP_NUMBER');
-        $account_sid = env("TWILIO_SID");
-        $auth_token = env("TWILIO_AUTH_TOKEN");
-        Log::info('twilio_whatsapp_number: '.$twilio_whatsapp_number);
-        Log::info('account_sid: '.$account_sid);
-        Log::info('auth_token: '.$auth_token);
-        //$client = new Client($account_sid, $auth_token);
-        $twilio = new Client($account_sid, $auth_token);
-        $pesan = $twilio->messages->create(
-            "whatsapp:".$recipient,
-            [
-                "from" => "whatsapp:+" . $twilio_whatsapp_number,
-                "body" => $message,
-            ]
-        );
-        return $pesan;
-        return $client->messages->create($recipient, array('from' => "whatsapp:+$twilio_whatsapp_number", 'body' => $message));*/
         $twilioSid = env('TWILIO_SID');
         $twilioToken = env('TWILIO_AUTH_TOKEN');
         $twilioWhatsAppNumber = env('TWILIO_WHATSAPP_NUMBER');
@@ -79,28 +62,37 @@ class ChatBotController extends Controller
         $message .= "Selamat Datang di Pusat Layanan Aplikasi e-Rapor SMK\n";
         $message .= "Silahkan ketik /erapor untuk memulai percakapan\n";
         if($body == '/erapor'){
-            //$message = "Hai *$user*\n";
-            //$message .= "Selamat Datang di Pusat Layanan Aplikasi e-Rapor SMK\n";
             $message = "Reply pesan ini dengan ketik:\n";
             $message .= "1 untuk informasi umum\n";
             $message .= "2 untuk bantuan\n";
-        }
-        if($OriginalRepliedMessageSid){
-            $find = Whatsapp::where(function($query) use ($user, $OriginalRepliedMessageSid){
-                $query->where('nama', $user);
-                $query->where('sid', $OriginalRepliedMessageSid);
-                $query->where('status', 1);
-            })->first();
-            if($find){
-                if($body == 99){
-                    Whatsapp::where('nama', $user)->update(['status' => 0]);
-                    $message = "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n";
+        } else {
+            if($OriginalRepliedMessageSid){
+                $find = Whatsapp::where(function($query) use ($user, $OriginalRepliedMessageSid){
+                    $query->where('nama', $user);
+                    $query->where('sid', $OriginalRepliedMessageSid);
+                    $query->where('status', 1);
+                })->first();
+                if($find){
+                    if($body == 99){
+                        Whatsapp::where('nama', $user)->update(['status' => 0]);
+                        $message = "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n";
+                    } else {
+                        if($body == 1){
+                            $message = "Informasi umum adalah sebagai berikut:\n";
+                            $message .= "Aplikasi e-Rapor SMK adalah aplikasi yang dikembangkan oleh Direktorat SMK\n";
+                            $message .= "Reply pesan ini dengan ketik:\n";
+                            $message .= "0 untuk kembali ke menu sebelumnya\n";
+                            $message .= "99 untuk keluar dari percakapan\n";
+                        }
+                        if($body == 2){
+                            $message = "Bantuan Troubleshooting e-Rapor SMK:\n";
+                            $message .= "Reply pesan ini dengan ketik:\n";
+                            $message .= "0 untuk kembali ke menu sebelumnya\n";
+                            $message .= "99 untuk keluar dari percakapan\n";
+                        }
+                    }
                 } else {
-                    $message = "Informasi umum adalah sebagai berikut:\n";
-                    $message .= "Aplikasi e-Rapor SMK adalah aplikasi yang dikembangkan oleh Direktorat SMK\n";
-                    $message = "Reply pesan ini dengan ketik:\n";
-                    $message .= "0 untuk kembali ke menu sebelumnya\n";
-                    $message .= "99 untuk keluar dari percakapan\n";
+                    $message = "Riwayat percakapan tidak ditemukan. Silahkan ketik /erapor untuk memulai percakapan\n";
                 }
             }
         }
@@ -109,23 +101,21 @@ class ChatBotController extends Controller
             [
                 "from" => "whatsapp:+" . $twilioWhatsAppNumber,
                 "body" => $message,
-                /*"actions" => [
+                "type" => "QUICK_REPLY",
+                "actions" => [
                     [
-                        "type" => "QUICK_REPLY",
                         "title" => "Check flight status",
                         "id" => "flightid1"
                     ],
                     [
-                        "type" => "QUICK_REPLY",
                         "title" => "Check gate number",
                         "id" => "flightid2"
                     ],
                     [
-                        "type" => "QUICK_REPLY",
                         "title" => "Speak with an agent",
                         "id" => "flightid2"
                     ]
-                ],*/
+                ],
             ]
         );
         Whatsapp::create([
