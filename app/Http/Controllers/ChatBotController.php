@@ -20,6 +20,7 @@ class ChatBotController extends Controller
     {
         $from = $request->input('From');
         $body = $request->input('Body');
+        $user = $request->input('ProfileName');
         Log::info('from: '.$from);
         Log::info('body: '.$body);
         $rawdata = file_get_contents("php://input");
@@ -49,7 +50,7 @@ class ChatBotController extends Controller
         }*/
         return;
     }
-    public function sendWhatsAppMessage(string $body, string $recipientNumber)
+    public function sendWhatsAppMessage(string $body, string $user, string $recipientNumber)
     {
         /*$twilio_whatsapp_number = env('TWILIO_WHATSAPP_NUMBER');
         $account_sid = env("TWILIO_SID");
