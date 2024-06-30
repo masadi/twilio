@@ -46,7 +46,8 @@ class WhatsAppController extends Controller
                     "body" => $message,
                 ]
             );
-            return back()->with(['success' => 'WhatsApp message sent successfully!', 'pesan' => $pesan]);
+            dump($pesan);
+            //return back()->with(['success' => 'WhatsApp message sent successfully!', 'pesan' => $pesan]);
         } catch (Exception $e) {
             return back()->with(['error' => $e->getMessage()]);
         }
