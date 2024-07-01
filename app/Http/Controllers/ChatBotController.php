@@ -64,7 +64,7 @@ class ChatBotController extends Controller
         $message .= "Selamat Datang di Pusat Layanan Aplikasi e-Rapor SMK\n";
         $message .= "Silahkan ketik /erapor untuk memulai percakapan\n";
         if($body == '/erapor'){
-            $message = $this->welcomeMessage();
+            $message = $this->welcomeMessage(0);
         } else {
             $find = Whatsapp::where(function($query) use ($user, $OriginalRepliedMessageSid, $WaId){
                 $query->where('nama', $user);
@@ -77,12 +77,8 @@ class ChatBotController extends Controller
                     Whatsapp::where('wa_id', $WaId)->update(['status' => 0]);
                     $message = "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n";
                 } else {
-                    $msg = Message::with('messages')->find($body);
-                    /*if($body == 0){
-                        $msg = Message::with('messages')->where('title', 0)->first();
-                    } else {
-                        $msg = Message::with('messages')->find($body);
-                    }*/
+                    $message = $this->welcomeMessage($body);
+                    /*$msg = Message::with('messages')->find($body);
                     if($msg){
                         if($msg->messages){
                             $message = '*'.$msg->title."*\n\n";
@@ -99,7 +95,7 @@ class ChatBotController extends Controller
                         }
                     } else {
                         $message = "Jawaban tidak ditemukan:\nBalas pesan ini Dengan memilih 1 opsi:\n0 untuk kembali ke menu utama\n99 untuk keluar dari percakapan\n";
-                    }
+                    }*/
                 }
             }
         }
@@ -136,7 +132,7 @@ class ChatBotController extends Controller
         //Storage::disk('public')->put('pesan.json', $pesan->sid);
         return $pesan;
     }
-    private function welcomeMessage($id = NULL){
+    private function welcomeMessage($id){
         if($id){
             $msg = Message::with('messages')->find($id);
         } else {
