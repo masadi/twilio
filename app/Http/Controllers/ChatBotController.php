@@ -24,14 +24,14 @@ class ChatBotController extends Controller
         $body = $request->input('Body');
         $user = $request->input('ProfileName');
         $WaId = $request->input('WaId');
-        $OriginalRepliedMessageSid = $request->input('OriginalRepliedMessageSid');
+        $MessageSid = $request->input('MessageSid');
         //Log::info('from: '.$from);
         //Log::info('body: '.$body);
         $rawdata = file_get_contents("php://input");
 		$json = json_decode($rawdata, true);
         Storage::disk('public')->put('whatsapp.json', json_encode(request()->all()));
         Storage::disk('public')->put('rawdata.json', json_encode($json));
-        $this->sendWhatsAppMessage($body, $user, $from, $WaId, $OriginalRepliedMessageSid);
+        $this->sendWhatsAppMessage($body, $user, $from, $WaId, $MessageSid);
         /*
         $client = new \GuzzleHttp\Client();
         try {
@@ -54,7 +54,7 @@ class ChatBotController extends Controller
         }*/
         return;
     }
-    public function sendWhatsAppMessage($body, $user, $recipientNumber, $WaId, $OriginalRepliedMessageSid)
+    public function sendWhatsAppMessage($body, $user, $recipientNumber, $WaId, $MessageSid)
     {
         $twilioSid = env('TWILIO_SID');
         $twilioToken = env('TWILIO_AUTH_TOKEN');
@@ -66,20 +66,19 @@ class ChatBotController extends Controller
             "body" => $message,
         ];
         if($body == '/erapor'){
-            $isi_pesan = $this->bodyMessage(0, $twilioWhatsAppNumber);
+            $isi_pesan = $this->bodyMessage(0, $twilioWhatsAppNumber, $WaId, $MessageSid);
         } else {
-            $find = Whatsapp::where(function($query) use ($user, $OriginalRepliedMessageSid, $WaId){
+            $find = Whatsapp::where(function($query) use ($user, $WaId){
                 $query->where('nama', $user);
-                //$query->where('sid', $OriginalRepliedMessageSid);
                 $query->where('wa_id', $WaId);
                 $query->where('status', 1);
             })->first();
             if($find){
                 if($body == 99){
                     Whatsapp::where('wa_id', $WaId)->update(['status' => 0]);
-                    $isi_pesan = $this->byeMessage($twilioWhatsAppNumber);
+                    $isi_pesan = $this->byeMessage($twilioWhatsAppNumber, $WaId, $MessageSid);
                 } else {
-                    $isi_pesan = $this->bodyMessage($body, $twilioWhatsAppNumber);
+                    $isi_pesan = $this->bodyMessage($body, $twilioWhatsAppNumber, $WaId, $MessageSid);
                 }
             }
         }
@@ -102,7 +101,7 @@ class ChatBotController extends Controller
         $message .= "Silahkan ketik /erapor untuk memulai percakapan\n";
         return $message;
     }
-    private function bodyMessage($id, $twilioWhatsAppNumber){
+    private function bodyMessage($id, $twilioWhatsAppNumber, $WaId, $MessageSid){
         if($id){
             $msg = Message::with('messages')->find($id);
         } else {
@@ -132,6 +131,8 @@ class ChatBotController extends Controller
             $isi_pesan = [
                 "from" => "whatsapp:+" . $twilioWhatsAppNumber,
                 "body" => $message,
+                'OriginalRepliedMessageSender' => "whatsapp:+" . $WaId,
+                'OriginalRepliedMessageSid' => $MessageSid,
                 'MediaUrl' => $MediaUrl
             ];
         } else {
@@ -142,10 +143,12 @@ class ChatBotController extends Controller
         }
         return $isi_pesan;
     }
-    private function byeMessage($twilioWhatsAppNumber){
+    private function byeMessage($twilioWhatsAppNumber, $WaId, $MessageSid){
         $isi_pesan = [
             "from" => "whatsapp:+" . $twilioWhatsAppNumber,
             "body" => "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n",
+            'OriginalRepliedMessageSender' => "whatsapp:+" . $WaId,
+            'OriginalRepliedMessageSid' => $MessageSid,
         ];
         return $isi_pesan;
     }
