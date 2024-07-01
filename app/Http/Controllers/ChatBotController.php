@@ -25,12 +25,9 @@ class ChatBotController extends Controller
         $user = $request->input('ProfileName');
         $WaId = $request->input('WaId');
         $MessageSid = $request->input('MessageSid');
-        //Log::info('from: '.$from);
-        //Log::info('body: '.$body);
         $rawdata = file_get_contents("php://input");
 		$json = json_decode($rawdata, true);
         Storage::disk('public')->put('whatsapp.json', json_encode(request()->all()));
-        Storage::disk('public')->put('rawdata.json', json_encode($json));
         $this->sendWhatsAppMessage($body, $user, $from, $WaId, $MessageSid);
         return;
     }
@@ -112,16 +109,12 @@ class ChatBotController extends Controller
             $isi_pesan = [
                 "from" => "whatsapp:+" . $twilioWhatsAppNumber,
                 "body" => $message,
-                'OriginalRepliedMessageSender' => "whatsapp:+" . $WaId,
-                'OriginalRepliedMessageSid' => $MessageSid,
                 'MediaUrl' => $MediaUrl
             ];
         } else {
             $isi_pesan = [
                 "from" => "whatsapp:+" . $twilioWhatsAppNumber,
                 "body" => $message,
-                'OriginalRepliedMessageSender' => "whatsapp:+" . $WaId,
-                'OriginalRepliedMessageSid' => $MessageSid,
             ];
         }
         return $isi_pesan;
@@ -130,8 +123,6 @@ class ChatBotController extends Controller
         $isi_pesan = [
             "from" => "whatsapp:+" . $twilioWhatsAppNumber,
             "body" => "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n",
-            'OriginalRepliedMessageSender' => "whatsapp:+" . $WaId,
-            'OriginalRepliedMessageSid' => $MessageSid,
         ];
         return $isi_pesan;
     }
