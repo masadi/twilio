@@ -110,6 +110,9 @@ class Faq extends Command
                 $b = $this->insertData($s, $a->id);
                 foreach($s['sub'] as $ss){
                     $c = $this->insertData($ss, $b->id);
+                    foreach($ss['sub'] as $sss){
+                        $d = $this->insertData($sss, $c->id);
+                    }
                 }
             }
         }
