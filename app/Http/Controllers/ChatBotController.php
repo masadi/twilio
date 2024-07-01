@@ -141,14 +141,24 @@ class ChatBotController extends Controller
         $message = "Jawaban tidak ditemukan:\nBalas pesan ini Dengan memilih 1 opsi:\n0 untuk kembali ke menu utama\n99 untuk keluar dari percakapan\n";
         if($msg){
             if($msg->messages){
-                $message = '*'.$msg->title."*\n\n";
-                $message .= $msg->body."\n";
+                if($msg->title){
+                    $message = '*'.$msg->title."*\n\n";
+                    $message .= $msg->body."\n";
+                } else {
+                    $message = $msg->body."\n";
+                }
                 $i=1;
                 foreach($msg->messages as $sub){
                     $message .= $i.' '.$sub->title."\n";
                 }
             } else {
-                $message = $msg->title."\n".$msg->body."\n";
+                //$message = $msg->title."\n".$msg->body."\n";
+                if($msg->title){
+                    $message = '*'.$msg->title."*\n\n";
+                    $message .= $msg->body."\n";
+                } else {
+                    $message = $msg->body."\n";
+                }
                 $message .= "0 untuk kembali ke menu utama\n";
                 $message .= $msg->message_id." untuk kembali ke menu sebelumnya\n";
                 $message .= "99 untuk keluar dari percakapan";
