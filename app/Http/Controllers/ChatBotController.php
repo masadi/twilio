@@ -25,8 +25,8 @@ class ChatBotController extends Controller
         $user = $request->input('ProfileName');
         $WaId = $request->input('WaId');
         $OriginalRepliedMessageSid = $request->input('OriginalRepliedMessageSid');
-        Log::info('from: '.$from);
-        Log::info('body: '.$body);
+        //Log::info('from: '.$from);
+        //Log::info('body: '.$body);
         $rawdata = file_get_contents("php://input");
 		$json = json_decode($rawdata, true);
         Storage::disk('public')->put('whatsapp.json', json_encode(request()->all()));
@@ -60,11 +60,13 @@ class ChatBotController extends Controller
         $twilioToken = env('TWILIO_AUTH_TOKEN');
         $twilioWhatsAppNumber = env('TWILIO_WHATSAPP_NUMBER');
         $twilio = new Client($twilioSid, $twilioToken);
-        $message = "Hai *$user*\n";
-        $message .= "Selamat Datang di Pusat Layanan Aplikasi e-Rapor SMK\n";
-        $message .= "Silahkan ketik /erapor untuk memulai percakapan\n";
+        $message = $this->welcomeMessage($user);
+        $isi_pesan = [
+            "from" => "whatsapp:+" . $twilioWhatsAppNumber,
+            "body" => $message,
+        ];
         if($body == '/erapor'){
-            $message = $this->welcomeMessage(0);
+            $isi_pesan = $this->bodyMessage(0, $twilioWhatsAppNumber);
         } else {
             $find = Whatsapp::where(function($query) use ($user, $OriginalRepliedMessageSid, $WaId){
                 $query->where('nama', $user);
@@ -75,34 +77,15 @@ class ChatBotController extends Controller
             if($find){
                 if($body == 99){
                     Whatsapp::where('wa_id', $WaId)->update(['status' => 0]);
-                    $message = "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n";
+                    $isi_pesan = $this->byeMessage($twilioWhatsAppNumber);
                 } else {
-                    $message = $this->welcomeMessage($body);
+                    $isi_pesan = $this->bodyMessage($body, $twilioWhatsAppNumber);
                 }
             }
         }
         $pesan = $twilio->messages->create(
             $recipientNumber,
-            [
-                "from" => "whatsapp:+" . $twilioWhatsAppNumber,
-                "body" => $message,
-                "type" => "QUICK_REPLY",
-                "actions" => [
-                    [
-                        "title" => "Check flight status",
-                        "id" => "flightid1"
-                    ],
-                    [
-                        "title" => "Check gate number",
-                        "id" => "flightid2"
-                    ],
-                    [
-                        "title" => "Speak with an agent",
-                        "id" => "flightid2"
-                    ]
-                ],
-                //'MediaUrl' => 'https://erapor.ditpsmk.net/img/faq/composer-update.png'
-            ]
+            $isi_pesan
         );
         if($body != 99){
             Whatsapp::updateOrCreate([
@@ -111,17 +94,24 @@ class ChatBotController extends Controller
                 'wa_id' => $WaId,
             ]);
         }
-        //Storage::disk('public')->put('pesan.json', $pesan->sid);
         return $pesan;
     }
-    private function welcomeMessage($id){
+    private function welcomeMessage($user){
+        $message = "Hai *$user*\n";
+        $message .= "Selamat Datang di Pusat Layanan Aplikasi e-Rapor SMK\n";
+        $message .= "Silahkan ketik /erapor untuk memulai percakapan\n";
+        return $message;
+    }
+    private function bodyMessage($id, $twilioWhatsAppNumber){
         if($id){
             $msg = Message::with('messages')->find($id);
         } else {
             $msg = Message::with('messages')->where('title', 0)->first();
         }
         $message = "Jawaban tidak ditemukan:\nBalas pesan ini Dengan memilih 1 opsi:\n0 untuk kembali ke menu utama\n99 untuk keluar dari percakapan\n";
+        $MediaUrl = NULL;
         if($msg){
+            $MediaUrl = $msg->MediaUrl;
             if($msg->title){
                 $message = '*'.$msg->title."*\n\n";
                 $message .= $msg->body."\n\n";
@@ -138,6 +128,25 @@ class ChatBotController extends Controller
             $message .= $msg->message_id." untuk kembali ke menu sebelumnya\n";
             $message .= "99 untuk keluar dari percakapan";
         }
-        return $message;
+        if($MediaUrl){
+            $isi_pesan = [
+                "from" => "whatsapp:+" . $twilioWhatsAppNumber,
+                "body" => $message,
+                'MediaUrl' => $MediaUrl
+            ];
+        } else {
+            $isi_pesan = [
+                "from" => "whatsapp:+" . $twilioWhatsAppNumber,
+                "body" => $message,
+            ];
+        }
+        return $isi_pesan;
+    }
+    private function byeMessage($twilioWhatsAppNumber){
+        $isi_pesan = [
+            "from" => "whatsapp:+" . $twilioWhatsAppNumber,
+            "body" => "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n",
+        ];
+        return $isi_pesan;
     }
 }
