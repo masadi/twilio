@@ -128,6 +128,7 @@ class ChatBotController extends Controller
             } else {
                 $message = $msg->body."\n\n";
             }
+            $message .= 'Balas pesan ini Dengan memilih 1 opsi:'."\n";
             if($msg->messages->count()){
                 foreach($msg->messages as $sub){
                     $message .= $sub->id.' '.$sub->title."\n";
