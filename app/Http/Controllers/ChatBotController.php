@@ -82,6 +82,7 @@ class ChatBotController extends Controller
                 }
             }
         }
+        Storage::disk('public')->put('rawdata.json', json_encode($isi_pesan));
         $pesan = $twilio->messages->create(
             $recipientNumber,
             $isi_pesan
@@ -139,6 +140,8 @@ class ChatBotController extends Controller
             $isi_pesan = [
                 "from" => "whatsapp:+" . $twilioWhatsAppNumber,
                 "body" => $message,
+                'OriginalRepliedMessageSender' => "whatsapp:+" . $WaId,
+                'OriginalRepliedMessageSid' => $MessageSid,
             ];
         }
         return $isi_pesan;
