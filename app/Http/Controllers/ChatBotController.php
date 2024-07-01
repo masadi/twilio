@@ -141,23 +141,16 @@ class ChatBotController extends Controller
                 $this->welcomeMessage()
             ],
             [
-                "Informasi umum adalah sebagai berikut:\n
-                Aplikasi e-Rapor SMK adalah aplikasi yang dikembangkan oleh Direktorat SMK\n
-                Reply pesan ini dengan ketik:\n
-                0 untuk kembali ke menu sebelumnya\n
-                99 untuk keluar dari percakapan\n",
+                "Informasi umum adalah sebagai berikut:\nAplikasi e-Rapor SMK adalah aplikasi yang dikembangkan oleh Direktorat SMK\nReply pesan ini dengan ketik:\n0 untuk kembali ke menu sebelumnya\n99 untuk keluar dari percakapan\n",
             ],
             [
-                "Bantuan Troubleshooting e-Rapor SMK:\n
-                Reply pesan ini dengan ketik:\n
-                0 untuk kembali ke menu sebelumnya\n
-                99 untuk keluar dari percakapan\n",
+                "Bantuan Troubleshooting e-Rapor SMK:\nReply pesan ini dengan ketik:\n0 untuk kembali ke menu sebelumnya\n99 untuk keluar dari percakapan\n",
             ]
         ];
         if(isset($data[$body])){
             return $data[$body];
         } else {
-            return "Jawaban tidak ditemukan. Silahkan ketik /erapor untuk memulai percakapan\n";
+            return "Jawaban tidak ditemukan. Silahkan ketik /erapor untuk memulai percakapan";
         }
     }
 }
