@@ -22,6 +22,7 @@ class ChatBotController extends Controller
         $from = $request->input('From');
         $body = $request->input('Body');
         $user = $request->input('ProfileName');
+        $WaId = $request->input('WaId');
         $OriginalRepliedMessageSid = $request->input('OriginalRepliedMessageSid');
         Log::info('from: '.$from);
         Log::info('body: '.$body);
@@ -29,7 +30,7 @@ class ChatBotController extends Controller
 		$json = json_decode($rawdata, true);
         Storage::disk('public')->put('whatsapp.json', json_encode(request()->all()));
         Storage::disk('public')->put('rawdata.json', json_encode($json));
-        $this->sendWhatsAppMessage($body, $user, $from, $OriginalRepliedMessageSid);
+        $this->sendWhatsAppMessage($body, $user, $from, $WaId, $OriginalRepliedMessageSid);
         /*
         $client = new \GuzzleHttp\Client();
         try {
@@ -52,7 +53,7 @@ class ChatBotController extends Controller
         }*/
         return;
     }
-    public function sendWhatsAppMessage($body, $user, $recipientNumber, $OriginalRepliedMessageSid)
+    public function sendWhatsAppMessage($body, $user, $recipientNumber, $WaId, $OriginalRepliedMessageSid)
     {
         $twilioSid = env('TWILIO_SID');
         $twilioToken = env('TWILIO_AUTH_TOKEN');
@@ -106,9 +107,10 @@ class ChatBotController extends Controller
             ]
         );
         if($body != 99){
-            Whatsapp::create([
+            Whatsapp::updateOrCreate([
                 'nama' => $user,
                 'sid' => $pesan->sid,
+                //'wa_id' => $WaId,
             ]);
         }
         //Storage::disk('public')->put('pesan.json', $pesan->sid);
