@@ -77,6 +77,7 @@ class ChatBotController extends Controller
         $message = "Hai *$user*\n";
         $message .= "Selamat Datang di Pusat Layanan Aplikasi e-Rapor SMK\n";
         $message .= "Silahkan ketik /erapor untuk memulai percakapan\n";
+        $message .= "Dikirim dari erapor.ditpsmk.net\n";
         return $message;
     }
     private function bodyMessage($id, $twilioWhatsAppNumber, $WaId, $MessageSid){
