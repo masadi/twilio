@@ -105,46 +105,34 @@ class Faq extends Command
                                 'MediaUrl' => NULL,
                                 'sub' => [
                                     [
-                                        [
-                                            'title' => 'composer update gagal',
-                                            'body' => 'Jika saat menjalankan perintah ```composer update``` tampil seperti gambar ini, silahkan download aplikasi composer melalui tautan https://getcomposer.org/download/ kemudian tutup CMD nya kemudian buka kembali dan ulangi dari awal',
-                                            'MediaUrl' => 'https://erapor.ditpsmk.net/img/faq/composer-update.png',
-                                            'sub' => [
-                                                [],
-                                            ],
-                                        ],
-                                        [
-                                            'title' => 'git pull gagal (part 1)',
-                                            'body' => 'Jika saat menjalankan perintah ```git pull``` tampil seperti gambar ini, silahkan ketik git ```config --global --add safe.directory C:/eRaporSMK/dataweb``` [enter]'."\n".'Kemudian ketik lagi ```git pull``` [enter]',
-                                            'MediaUrl' => 'https://erapor.ditpsmk.net/img/faq/git-pull-part-1.jpeg',
-                                            'sub' => [
-                                                [],
-                                            ],
-                                        ],
-                                        [
-                                            'title' => 'git pull gagal (part 2)',
-                                            'body' => 'Jika saat menjalankan perintah git pull tampil seperti gambar ini, silahkan ketik ```git stash``` [enter]'."\n".'Kemudian ketik lagi ```git pull``` [enter]',
-                                            'MediaUrl' => 'https://erapor.ditpsmk.net/img/faq/git-pull-part-2.jpeg',
-                                            'sub' => [
-                                                [],
-                                            ],
-                                        ],
-                                        [
-                                            'title' => 'git pull gagal (part 3)',
-                                            'body' => 'Jika saat menjalankan perintah git pull tampil seperti gambar ini, silahkan ketik ```git clean -df``` [enter]'."\n".'Kemudian ketik lagi ```git pull``` [enter]',
-                                            'MediaUrl' => 'https://erapor.ditpsmk.net/img/faq/git-pull-part-3.jpeg',
-                                            'sub' => [
-                                                [],
-                                            ],
-                                        ],
-                                        [
-                                            'title' => 'git pull gagal (part 4)',
-                                            'body' => 'Jika saat menjalankan perintah git pull tampil seperti gambar ini, silahkan silahkan download dulu aplikasi git melalui tautan https://git-scm.com/download/win'."\n".'Tutup CMD nya kemudian buka kembali dan ulangi dari awal',
-                                            'MediaUrl' => 'https://erapor.ditpsmk.net/img/faq/git-pull-part-4.png',
-                                            'sub' => [
-                                                [],
-                                            ],
-                                        ],
+                                        'title' => 'composer update gagal',
+                                        'body' => 'Jika saat menjalankan perintah ```composer update``` tampil seperti gambar ini, silahkan download aplikasi composer melalui tautan https://getcomposer.org/download/ kemudian tutup CMD nya kemudian buka kembali dan ulangi dari awal',
+                                        'MediaUrl' => 'https://erapor.ditpsmk.net/img/faq/composer-update.png',
+                                        'sub' => [],
+                                    ],
+                                    [
+                                        'title' => 'git pull gagal (part 1)',
+                                        'body' => 'Jika saat menjalankan perintah ```git pull``` tampil seperti gambar ini, silahkan ketik git ```config --global --add safe.directory C:/eRaporSMK/dataweb``` [enter]'."\n".'Kemudian ketik lagi ```git pull``` [enter]',
+                                        'MediaUrl' => 'https://erapor.ditpsmk.net/img/faq/git-pull-part-1.jpeg',
+                                        'sub' => [],
+                                    ],
+                                    [
+                                        'title' => 'git pull gagal (part 2)',
+                                        'body' => 'Jika saat menjalankan perintah git pull tampil seperti gambar ini, silahkan ketik ```git stash``` [enter]'."\n".'Kemudian ketik lagi ```git pull``` [enter]',
+                                        'MediaUrl' => 'https://erapor.ditpsmk.net/img/faq/git-pull-part-2.jpeg',
+                                        'sub' => [],
+                                    ],
+                                    [
+                                        'title' => 'git pull gagal (part 3)',
+                                        'body' => 'Jika saat menjalankan perintah git pull tampil seperti gambar ini, silahkan ketik ```git clean -df``` [enter]'."\n".'Kemudian ketik lagi ```git pull``` [enter]',
+                                        'MediaUrl' => 'https://erapor.ditpsmk.net/img/faq/git-pull-part-3.jpeg',
+                                        'sub' => [],
+                                    ],
+                                    [
+                                        'title' => 'git pull gagal (part 4)',
+                                        'body' => 'Jika saat menjalankan perintah git pull tampil seperti gambar ini, silahkan silahkan download dulu aplikasi git melalui tautan https://git-scm.com/download/win'."\n".'Tutup CMD nya kemudian buka kembali dan ulangi dari awal',
+                                        'MediaUrl' => 'https://erapor.ditpsmk.net/img/faq/git-pull-part-4.png',
+                                        'sub' => [],
                                     ],
                                 ],
                             ],
