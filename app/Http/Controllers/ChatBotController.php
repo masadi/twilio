@@ -132,11 +132,10 @@ class ChatBotController extends Controller
                 foreach($msg->messages as $sub){
                     $message .= $sub->id.' '.$sub->title."\n";
                 }
-            } else {
-                $message .= "0 untuk kembali ke menu utama\n";
-                $message .= $msg->message_id." untuk kembali ke menu sebelumnya\n";
-                $message .= "99 untuk keluar dari percakapan";
             }
+            $message .= "0 untuk kembali ke menu utama\n";
+            $message .= $msg->message_id." untuk kembali ke menu sebelumnya\n";
+            $message .= "99 untuk keluar dari percakapan";
         }
         return $message;
     }
