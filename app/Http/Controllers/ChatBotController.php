@@ -78,24 +78,6 @@ class ChatBotController extends Controller
                     $message = "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n";
                 } else {
                     $message = $this->welcomeMessage($body);
-                    /*$msg = Message::with('messages')->find($body);
-                    if($msg){
-                        if($msg->messages){
-                            $message = '*'.$msg->title."*\n\n";
-                            $message .= $msg->body."\n";
-                            $i=1;
-                            foreach($msg->messages as $sub){
-                                $message .= $i.' '.$sub->title."\n";
-                            }
-                        } else {
-                            $message = $msg->title."\n".$msg->body."\n";
-                            $message .= "0 untuk kembali ke menu utama\n";
-                            $message .= $msg->message_id." untuk kembali ke menu sebelumnya\n";
-                            $message .= "99 untuk keluar dari percakapan";
-                        }
-                    } else {
-                        $message = "Jawaban tidak ditemukan:\nBalas pesan ini Dengan memilih 1 opsi:\n0 untuk kembali ke menu utama\n99 untuk keluar dari percakapan\n";
-                    }*/
                 }
             }
         }
@@ -147,9 +129,8 @@ class ChatBotController extends Controller
                 } else {
                     $message = $msg->body."\n";
                 }
-                $i=1;
                 foreach($msg->messages as $sub){
-                    $message .= $i.' '.$sub->title."\n";
+                    $message .= $msg->id.' '.$sub->title."\n";
                 }
             } else {
                 //$message = $msg->title."\n".$msg->body."\n";
