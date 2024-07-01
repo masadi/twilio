@@ -65,22 +65,24 @@ class ChatBotController extends Controller
         if($body == '/erapor'){
             $message = $this->welcomeMessage();
         } else {
-            if($OriginalRepliedMessageSid){
-                $find = Whatsapp::where(function($query) use ($user, $OriginalRepliedMessageSid){
-                    $query->where('nama', $user);
-                    $query->where('sid', $OriginalRepliedMessageSid);
-                    $query->where('status', 1);
-                })->first();
-                if($find){
-                    if($body == 99){
-                        Whatsapp::where('nama', $user)->update(['status' => 0]);
-                        $message = "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n";
-                    } else {
-                        $message =$this->replyMessage($body);
-                    }
+            /*if($OriginalRepliedMessageSid){
+                
+            }*/
+            $find = Whatsapp::where(function($query) use ($user, $OriginalRepliedMessageSid, $WaId){
+                $query->where('nama', $user);
+                //$query->where('sid', $OriginalRepliedMessageSid);
+                $query->where('WaId', $WaId);
+                $query->where('status', 1);
+            })->first();
+            if($find){
+                if($body == 99){
+                    Whatsapp::where('WaId', $WaId)->update(['status' => 0]);
+                    $message = "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n";
                 } else {
-                    $message = "Riwayat percakapan tidak ditemukan. Silahkan ketik /erapor untuk memulai percakapan\n";
+                    $message =$this->replyMessage($body);
                 }
+            } else {
+                $message = "Riwayat percakapan tidak ditemukan. Silahkan ketik /erapor untuk memulai percakapan\n";
             }
         }
         $pesan = $twilio->messages->create(
@@ -110,7 +112,7 @@ class ChatBotController extends Controller
             Whatsapp::updateOrCreate([
                 'nama' => $user,
                 'sid' => $pesan->sid,
-                //'wa_id' => $WaId,
+                'wa_id' => $WaId,
             ]);
         }
         //Storage::disk('public')->put('pesan.json', $pesan->sid);
