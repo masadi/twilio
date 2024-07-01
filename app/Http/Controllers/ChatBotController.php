@@ -138,7 +138,7 @@ class ChatBotController extends Controller
                     $message = '*'.$msg->title."*\n\n";
                     $message .= $msg->body."\n";
                 } else {
-                    $message = $msg->body."\n";
+                    $message .= $msg->body."\n";
                 }
                 $message .= "0 untuk kembali ke menu utama\n";
                 $message .= $msg->message_id." untuk kembali ke menu sebelumnya\n";
