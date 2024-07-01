@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Twilio\Rest\Client;
 use App\Models\Whatsapp;
+use App\Models\Message;
 
 class ChatBotController extends Controller
 {
@@ -79,10 +80,29 @@ class ChatBotController extends Controller
                     Whatsapp::where('wa_id', $WaId)->update(['status' => 0]);
                     $message = "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n";
                 } else {
-                    $message =$this->replyMessage($body);
+                    if($body == 0){
+                        $msg = Message::with('messages')->where('title', 0)->first();
+                    } else {
+                        $msg = Message::with('messages')->find($body);
+                    }
+                    if($msg){
+                        if($msg->messages){
+                            $message = '*'.$msg->title."*\n\n";
+                            $message .= $msg->body."\n";
+                            $i=1;
+                            foreach($msg->messages as $sub){
+                                $message = $i.' '.$sub->title."\n";
+                            }
+                        } else {
+                            $message = $msg->title."\n".$msg->body."\n";
+                            $message .= "0 untuk kembali ke menu utama\n";
+                            $message .= $msg->message_id." untuk kembali ke menu sebelumnya\n";
+                            $message .= "99 untuk keluar dari percakapan";
+                        }
+                    } else {
+                        $message = "Jawaban tidak ditemukan:\nBalas pesan ini Dengan memilih 1 opsi:\n0 untuk kembali ke menu utama\n99 untuk keluar dari percakapan\n";
+                    }
                 }
-            //} else {
-                //$message = "Riwayat percakapan tidak ditemukan. Silahkan ketik /erapor untuk memulai percakapan\n";
             }
         }
         $pesan = $twilio->messages->create(
