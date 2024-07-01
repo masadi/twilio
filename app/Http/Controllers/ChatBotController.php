@@ -124,9 +124,9 @@ class ChatBotController extends Controller
         if($msg){
             if($msg->title){
                 $message = '*'.$msg->title."*\n\n";
-                $message .= $msg->body."\n";
+                $message .= $msg->body."\n\n";
             } else {
-                $message = $msg->body."\n";
+                $message = $msg->body."\n\n";
             }
             if($msg->messages->count()){
                 foreach($msg->messages as $sub){
