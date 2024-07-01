@@ -21,7 +21,7 @@ class ChatBotController extends Controller
     public function listenToReplies(Request $request)
     {
         $from = $request->input('From');
-        $to = $request->input('to');
+        $to = $request->input('To');
         $body = $request->input('Body');
         $user = $request->input('ProfileName');
         $WaId = $request->input('WaId');
