@@ -128,7 +128,7 @@ class ChatBotController extends Controller
             } else {
                 $message = $msg->body."\n";
             }
-            if($msg->messages){
+            if($msg->messages->count()){
                 foreach($msg->messages as $sub){
                     $message .= $sub->id.' '.$sub->title."\n";
                 }
