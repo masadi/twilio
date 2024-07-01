@@ -76,21 +76,6 @@ class ChatBotController extends Controller
                         $message = "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n";
                     } else {
                         $message =$this->replyMessage($body);
-                        /*if($body == 0){
-                        }
-                        if($body == 1){
-                            $message = "Informasi umum adalah sebagai berikut:\n";
-                            $message .= "Aplikasi e-Rapor SMK adalah aplikasi yang dikembangkan oleh Direktorat SMK\n";
-                            $message .= "Reply pesan ini dengan ketik:\n";
-                            $message .= "0 untuk kembali ke menu sebelumnya\n";
-                            $message .= "99 untuk keluar dari percakapan\n";
-                        }
-                        if($body == 2){
-                            $message = "Bantuan Troubleshooting e-Rapor SMK:\n";
-                            $message .= "Reply pesan ini dengan ketik:\n";
-                            $message .= "0 untuk kembali ke menu sebelumnya\n";
-                            $message .= "99 untuk keluar dari percakapan\n";
-                        }*/
                     }
                 } else {
                     $message = "Riwayat percakapan tidak ditemukan. Silahkan ketik /erapor untuk memulai percakapan\n";
@@ -130,7 +115,7 @@ class ChatBotController extends Controller
         return $pesan;
     }
     private function welcomeMessage(){
-        $message = "Reply pesan ini dengan ketik:\n";
+        $message = "Balas pesan ini Dengan memilih 1 opsi:\n";
         $message .= "1 untuk informasi umum\n";
         $message .= "2 untuk bantuan\n";
         return $message;
@@ -141,10 +126,10 @@ class ChatBotController extends Controller
                 $this->welcomeMessage()
             ],
             [
-                "Informasi umum adalah sebagai berikut:\nAplikasi e-Rapor SMK adalah aplikasi yang dikembangkan oleh Direktorat SMK\nReply pesan ini dengan ketik:\n0 untuk kembali ke menu sebelumnya\n99 untuk keluar dari percakapan\n",
+                "Informasi umum adalah sebagai berikut:\nAplikasi e-Rapor SMK adalah aplikasi yang dikembangkan oleh Direktorat SMK\nBalas pesan ini Dengan memilih 1 opsi:\n0 untuk kembali ke menu sebelumnya\n99 untuk keluar dari percakapan\n",
             ],
             [
-                "Bantuan Troubleshooting e-Rapor SMK:\nReply pesan ini dengan ketik:\n0 untuk kembali ke menu sebelumnya\n99 untuk keluar dari percakapan\n",
+                "Bantuan Troubleshooting e-Rapor SMK:\nBalas pesan ini Dengan memilih 1 opsi:\n0 untuk kembali ke menu sebelumnya\n99 untuk keluar dari percakapan\n",
             ]
         ];
         if(isset($data[$body])){
