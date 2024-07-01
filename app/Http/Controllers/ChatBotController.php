@@ -66,9 +66,6 @@ class ChatBotController extends Controller
         if($body == '/erapor'){
             $message = $this->welcomeMessage();
         } else {
-            /*if($OriginalRepliedMessageSid){
-                
-            }*/
             $find = Whatsapp::where(function($query) use ($user, $OriginalRepliedMessageSid, $WaId){
                 $query->where('nama', $user);
                 //$query->where('sid', $OriginalRepliedMessageSid);
@@ -80,18 +77,19 @@ class ChatBotController extends Controller
                     Whatsapp::where('wa_id', $WaId)->update(['status' => 0]);
                     $message = "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n";
                 } else {
-                    if($body == 0){
+                    $msg = Message::with('messages')->find($body);
+                    /*if($body == 0){
                         $msg = Message::with('messages')->where('title', 0)->first();
                     } else {
                         $msg = Message::with('messages')->find($body);
-                    }
+                    }*/
                     if($msg){
                         if($msg->messages){
                             $message = '*'.$msg->title."*\n\n";
                             $message .= $msg->body."\n";
                             $i=1;
                             foreach($msg->messages as $sub){
-                                $message = $i.' '.$sub->title."\n";
+                                $message .= $i.' '.$sub->title."\n";
                             }
                         } else {
                             $message = $msg->title."\n".$msg->body."\n";
@@ -138,10 +136,28 @@ class ChatBotController extends Controller
         //Storage::disk('public')->put('pesan.json', $pesan->sid);
         return $pesan;
     }
-    private function welcomeMessage(){
-        $message = "Balas pesan ini Dengan memilih 1 opsi:\n";
-        $message .= "1 untuk informasi umum\n";
-        $message .= "2 untuk bantuan\n";
+    private function welcomeMessage($id = NULL){
+        if($id){
+            $msg = Message::with('messages')->find($id);
+        } else {
+            $msg = Message::with('messages')->where('title', 0)->first();
+        }
+        $message = "Jawaban tidak ditemukan:\nBalas pesan ini Dengan memilih 1 opsi:\n0 untuk kembali ke menu utama\n99 untuk keluar dari percakapan\n";
+        if($msg){
+            if($msg->messages){
+                $message = '*'.$msg->title."*\n\n";
+                $message .= $msg->body."\n";
+                $i=1;
+                foreach($msg->messages as $sub){
+                    $message .= $i.' '.$sub->title."\n";
+                }
+            } else {
+                $message = $msg->title."\n".$msg->body."\n";
+                $message .= "0 untuk kembali ke menu utama\n";
+                $message .= $msg->message_id." untuk kembali ke menu sebelumnya\n";
+                $message .= "99 untuk keluar dari percakapan";
+            }
+        }
         return $message;
     }
     private function replyMessage($body){
