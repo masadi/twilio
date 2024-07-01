@@ -29,7 +29,7 @@ class Faq extends Command
         $data = [
             [
                 'title' => 0,
-                'body' => "Balas pesan ini Dengan memilih 1 opsi:",
+                'body' => "Tata cara penggunaan Whatsapp Pusat Layanan Aplikasi e-Rapor SMK adalah dengan mengirim jawaban berupa angka yang tertera pada pilihan yang tersedia. Angka yang tidak tersedia tidak akan menampilkan jawaban yang diinginkan!",
                 'MediaUrl' => NULL,
                 'sub' => [
                     [
