@@ -130,7 +130,7 @@ class ChatBotController extends Controller
                     $message = $msg->body."\n";
                 }
                 foreach($msg->messages as $sub){
-                    $message .= $msg->id.' '.$sub->title."\n";
+                    $message .= $sub->id.' '.$sub->title."\n";
                 }
             } else {
                 //$message = $msg->title."\n".$msg->body."\n";
