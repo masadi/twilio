@@ -71,12 +71,12 @@ class ChatBotController extends Controller
             $find = Whatsapp::where(function($query) use ($user, $OriginalRepliedMessageSid, $WaId){
                 $query->where('nama', $user);
                 //$query->where('sid', $OriginalRepliedMessageSid);
-                $query->where('WaId', $WaId);
+                $query->where('wa_id', $WaId);
                 $query->where('status', 1);
             })->first();
             if($find){
                 if($body == 99){
-                    Whatsapp::where('WaId', $WaId)->update(['status' => 0]);
+                    Whatsapp::where('wa_id', $WaId)->update(['status' => 0]);
                     $message = "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n";
                 } else {
                     $message =$this->replyMessage($body);
