@@ -132,7 +132,7 @@ class ChatBotController extends Controller
             $isi_pesan = [
                 "from" => "whatsapp:+" . $twilioWhatsAppNumber,
                 "body" => $message,
-                'OriginalRepliedMessageSender' => "whatsapp:+" . $WaId,
+                'OriginalRepliedMessageSender' => "whatsapp:+" . $twilioWhatsAppNumber,
                 'OriginalRepliedMessageSid' => $MessageSid,
                 'MediaUrl' => $MediaUrl
             ];
@@ -140,7 +140,7 @@ class ChatBotController extends Controller
             $isi_pesan = [
                 "from" => "whatsapp:+" . $twilioWhatsAppNumber,
                 "body" => $message,
-                'OriginalRepliedMessageSender' => "whatsapp:+" . $WaId,
+                'OriginalRepliedMessageSender' => "whatsapp:+" . $twilioWhatsAppNumber,
                 'OriginalRepliedMessageSid' => $MessageSid,
             ];
         }
@@ -150,7 +150,7 @@ class ChatBotController extends Controller
         $isi_pesan = [
             "from" => "whatsapp:+" . $twilioWhatsAppNumber,
             "body" => "Terima Kasih telah menghubungi Pusat Layanan Aplikasi e-Rapor SMK\n",
-            'OriginalRepliedMessageSender' => "whatsapp:+" . $WaId,
+            'OriginalRepliedMessageSender' => "whatsapp:+" . $twilioWhatsAppNumber,
             'OriginalRepliedMessageSid' => $MessageSid,
         ];
         return $isi_pesan;
