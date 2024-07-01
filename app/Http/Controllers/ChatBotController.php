@@ -81,8 +81,8 @@ class ChatBotController extends Controller
                 } else {
                     $message =$this->replyMessage($body);
                 }
-            } else {
-                $message = "Riwayat percakapan tidak ditemukan. Silahkan ketik /erapor untuk memulai percakapan\n";
+            //} else {
+                //$message = "Riwayat percakapan tidak ditemukan. Silahkan ketik /erapor untuk memulai percakapan\n";
             }
         }
         $pesan = $twilio->messages->create(
