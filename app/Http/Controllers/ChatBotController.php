@@ -140,22 +140,4 @@ class ChatBotController extends Controller
         }
         return $message;
     }
-    private function replyMessage($body){
-        $data = [
-            [
-                $this->welcomeMessage()
-            ],
-            [
-                "Informasi umum adalah sebagai berikut:\nAplikasi e-Rapor SMK adalah aplikasi yang dikembangkan oleh Direktorat SMK\nBalas pesan ini Dengan memilih 1 opsi:\n0 untuk kembali ke menu utama\n99 untuk keluar dari percakapan\n",
-            ],
-            [
-                "Bantuan Troubleshooting e-Rapor SMK:\nBalas pesan ini Dengan memilih 1 opsi:\n0 untuk kembali ke menu utama\n99 untuk keluar dari percakapan\n",
-            ]
-        ];
-        if(isset($data[$body])){
-            return $data[$body];
-        } else {
-            return "Jawaban tidak ditemukan:\nBalas pesan ini Dengan memilih 1 opsi:\n0 untuk kembali ke menu utama\n99 untuk keluar dari percakapan\n";
-        }
-    }
 }
